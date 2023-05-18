@@ -56,11 +56,15 @@
 
     <script>
       const fetchDataButton = document.querySelector('#fetch-data');
+      const targetCountries = ['JP', 'HK', 'TW', 'KR', 'SG']; // 要获取的国家或地区列表
       fetchDataButton.addEventListener('click', () => {
         // 获取JSON数据
         fetch('https://ghproxy.com/https://raw.githubusercontent.com/hookzof/socks5_list/master/tg/mtproto.json')
           .then(response => response.json())
           .then(data => {
+            // 过滤出指定国家或地区的代理服务器对象数组
+            const filteredData = data.filter(item => targetCountries.includes(item.country));
+
             // 按国家分组代理服务器对象
             const proxiesByCountry = data.reduce((acc, curr) => {
               if (!acc[curr.country]) {
