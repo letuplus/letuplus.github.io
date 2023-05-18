@@ -94,7 +94,7 @@
                   // 处理每个代理服务器对象
                   const proxyItems = proxies.map(proxy => {
                     // 根据格式构建链接URL
-                    const url = `tg://proxy?server=${proxy.host}&port=${proxy.port}&secret=${proxy.secret}&bot=@mtpro_xyz_bot#${proxy.country}`;
+                    const url = `tg://proxy?server=${proxy.host}&port=${proxy.port}&secret=${proxy.secret}#${proxy.country}`;
                     // 构建HTML代码
                     return `<li><a href="${url}">${proxy.host}</a></li>`;
                   });
