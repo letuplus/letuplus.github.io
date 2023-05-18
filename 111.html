@@ -46,6 +46,7 @@
       }
     </style>
   </head>
+
   <body>
     <p></p>
     <button id="fetch-data">Get Data</button>
@@ -56,8 +57,12 @@
 
     <script>
       const fetchDataButton = document.querySelector('#fetch-data');
-      const proxiesByCountry = ['JP', 'HK', 'TW', 'KR', 'SG']; // 要获取的国家或地区列表
+      const targetCountries = ['JP', 'HK', 'TW', 'KR', 'SG']; // 要获取的国家或地区列表
+
       fetchDataButton.addEventListener('click', () => {
+        // 清除原有的数据
+        document.querySelector('#proxy-list').innerHTML = '';
+
         // 获取JSON数据
         fetch('https://ghproxy.com/https://raw.githubusercontent.com/hookzof/socks5_list/master/tg/mtproto.json')
           .then(response => response.json())
@@ -66,7 +71,7 @@
             const filteredData = data.filter(item => targetCountries.includes(item.country));
 
             // 按国家分组代理服务器对象
-            const proxiesByCountry = data.reduce((acc, curr) => {
+            const proxiesByCountry = filteredData.reduce((acc, curr) => {
               if (!acc[curr.country]) {
                 acc[curr.country] = [];
               }
@@ -116,11 +121,11 @@
             });
 
             // 显示数据源更新时间
-            const lastUpdated = new Date(data[data.length - 1].updateTime * 1000);
-            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
-            document.getElementById('last-updated').textContent = lastUpdated.toLocaleString('zh-CN', options);
-          });
-      });
-    </script>
-  </body>
+            const lastUpdated = new Date(filteredData[filteredData.length - 1].updateTime * 1000);
+const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+document.getElementById('last-updated').textContent = lastUpdated.toLocaleString('zh-CN', options);
+});
+});
+</script>
+</body>
 </html>
