@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Service</title>
+    <style>
+      #proxy-list li ul {
+        display: none;
+      }
+
+      #proxy-list li.open ul {
+        display: block;
+      }
+
+      #proxy-list h2 {
+        cursor: pointer;
+      }
+
+      .count {
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <p></p>
+    <button id="fetch-data">Get Data</button>
+
+    <p>DateTime： <span id="last-updated"></span></p>
+
+    <ul id="proxy-list"></ul>
+
+    <script>
+      const fetchDataButton = document.querySelector('#fetch-data');
+      fetchDataButton.addEventListener('click', () => {
+        // 获取JSON数据
+        fetch('https://raw.fastgit.org/hookzof/socks5_list/master/tg/mtproto.json')
+          .then(response => response.json())
+          .then(data => {
+            // 按国家分组代理服务器对象
+            const proxiesByCountry = data.reduce((acc, curr) => {
+              if (!acc[curr.country]) {
+                acc[curr.country] = [];
+              }
+              acc[curr.country].push(curr);
+              return acc;
+            }, {});
+
+            // 处理每个国家的代理服务器列表
+            Object.entries(proxiesByCountry).forEach(([country, proxies]) => {
+              // 处理每个代理服务器对象
+              const proxyItems = proxies.map(proxy => {
+                // 根据格式构建链接URL
+                const url = `tg://proxy?server=${proxy.host}&port=${proxy.port}&secret=${proxy.secret}&bot=@mtpro_xyz_bot#${proxy.country}`;
+                // 构建HTML代码
+                return `<li><a href="${url}">${proxy.host}</a></li>`;
+              });
+              // 统计子分类的数量
+              const count = proxyItems.length;
+
+              // 构建HTML代码
+              const countrySection = `
+                <li>
+                  <h2>${country} <span class="count">(${count})</span></h2>
+                  <ul>
+                    ${proxyItems.join('')}
+                  </ul>
+                </li>
+              `;
+
+              // 将国家代理服务器列表添加到页面中
+              document.querySelector('#proxy-list').innerHTML += countrySection;
+            });
+
+            // 添加事件监听器，以便在单击标题时打开/关闭子列表
+            const headers = document.querySelectorAll('#proxy-list h2');
+            headers.forEach(header => {
+              header.addEventListener('click', () => {
+                // 首先将所有其他的国家列表收缩起来
+                headers.forEach(otherHeader => {
+                  if (otherHeader !== header) {
+                    otherHeader.parentNode.classList.remove('open');
+                  }
+                });
+                // 再根据当前标头的状态切换对应的国家列表的展开收缩状态
+                header.parentNode.classList.toggle('open');
+              });
+            });
+
+            // 显示数据源更新时间
+            const lastUpdated = new Date(data[data.length - 1].updateTime * 1000);
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+            document.getElementById('last-updated').textContent = lastUpdated.toLocaleString('zh-CN', options);
+          });
+      });
+    </script>
+  </body>
+</html>
