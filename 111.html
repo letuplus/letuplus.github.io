@@ -50,7 +50,13 @@
     #fetch-data {
       width: 100%;
       height: 50px;
-      margin: 20px auto;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background-color: #007bff;
+      color: white;
+      font-size: 1.2rem;
+      border: none;
     }
 
     p {
@@ -64,9 +70,9 @@
 </head>
 
 <body>
-  <button id="fetch-data">Get Data</button>
-  <p>DateTime: <span id="last-updated"></span></p>
   <ul id="proxy-list"></ul>
+  <p>DateTime: <span id="last-updated"></span></p>
+  <button id="fetch-data">获取代理服务器列表</button>
 
   <script>
     const fetchDataButton = document.querySelector('#fetch-data');
@@ -128,10 +134,13 @@
           // 显示数据源更新时间
           const lastUpdated = new Date(data[data.length - 1].updateTime * 1000);
           const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
-          document.getElementById('last-updated').textContent = lastUpdated.toLocaleString('zh-CN', options);
-        });
-    });
-  </script>
+          document.getElementById('last-updated').textContent = lastUpdated.toLocaleString('en-US', options);
+	})
+	.catch(error => {
+	console.error('Failed to fetch proxy list:', error);
+	});
+	});
+</script>
 </body>
 
 </html>
