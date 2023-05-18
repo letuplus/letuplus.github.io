@@ -56,7 +56,7 @@
 
     <script>
       const fetchDataButton = document.querySelector('#fetch-data');
-      const targetCountries = ['JP', 'HK', 'TW', 'KR', 'SG']; // 要获取的国家或地区列表
+      const proxiesByCountry = ['JP', 'HK', 'TW', 'KR', 'SG']; // 要获取的国家或地区列表
       fetchDataButton.addEventListener('click', () => {
         // 获取JSON数据
         fetch('https://ghproxy.com/https://raw.githubusercontent.com/hookzof/socks5_list/master/tg/mtproto.json')
