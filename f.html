@@ -1,41 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Extract Proxy Links</title>
-</head>
-<body>
-
-	<h1>Extract Proxy Links from README.md</h1>
-
-	<button onclick="extractLinks()">Extract Links</button>
-
-	<p id="linkList"></p>
-
+	<title>Extract Text from README.md</title>
 	<script>
-		function extractLinks() {
+		function extractText() {
 			fetch("https://raw.githubusercontent.com/abshare/abshare.github.io/main/README.md")
 				.then(response => response.text())
 				.then(text => {
-					const regex = /```(?:\S*\n)?([^`]+)```/;
+					const regex = /```([\s\S]+?)```/;
 					const match = regex.exec(text);
 					if (match) {
-						const linksRegex = /(https?|socks[45]):\/\/(?:[\w-]+\.)+[a-z]{2,}(?::\d{2,5})?(?:\/[\w&%?#+=.]*)?/gi;
-						const links = match[1].match(linksRegex);
-						if (links) {
-							document.getElementById("linkList").innerHTML = "<strong>Proxy Links:</strong><br>" + links.join("<br>");
-						} else {
-							document.getElementById("linkList").innerHTML = "No proxy links found.";
-						}
+						document.body.innerHTML = match[1];
 					} else {
-						document.getElementById("linkList").innerHTML = "Code block not found in README.md";
+						console.error("Code block not found in README.md");
 					}
 				})
 				.catch(error => {
 					console.error(error);
-					document.getElementById("linkList").innerHTML = "An error occurred while fetching the data.";
 				});
 		}
+		window.onload = extractText;
 	</script>
-
+</head>
+<body>
 </body>
 </html>
