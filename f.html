@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Extract Text from README.md</title>
-	<script>
-		function extractText() {
-			fetch("https://raw.githubusercontent.com/abshare/abshare.github.io/main/README.md")
-				.then(response => response.text())
-				.then(text => {
-					const regex = /```([\s\S]+?)```/;
-					const match = regex.exec(text);
-					if (match) {
-						document.body.innerHTML = match[1];
-					} else {
-						console.error("Code block not found in README.md");
-					}
-				})
-				.catch(error => {
-					console.error(error);
-				});
-		}
-		window.onload = extractText;
-	</script>
-</head>
-<body>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Proxy Links</title>
+  </head>
+  <body>
+    <div id="proxy-trojan"></div>
+    <div id="proxy-vmess"></div>
+
+    <script>
+      fetch('https://raw.githubusercontent.com/abshare/abshare.github.io/main/README.md')
+        .then(response => response.text())
+        .then(text => {
+          const regex = /```([\s\S]*?)```/g;
+          let match;
+          let trojanHtml = '';
+          let vmessHtml = '';
+
+          while ((match = regex.exec(text)) !== null) {
+            const lines = match[1].split('\n');
+            let content = '';
+            for (let i = 0; i < lines.length; i++) {
+              const line = lines[i].trim();
+              if (line.startsWith('trojan:') || line.startsWith('vmess:')) {
+                content += (content ? '\n' : '') + line;
+              }
+            }
+            if (match[1].indexOf('trojan:') >= 0) {
+              trojanHtml += `<pre>${content}</pre>`;
+            } else {
+              vmessHtml += `<pre>${content}</pre>`;
+            }
+          }
+
+          document.getElementById('proxy-trojan').innerHTML = trojanHtml;
+          document.getElementById('proxy-vmess').innerHTML = vmessHtml;
+        });
+    </script>
+  </body>
 </html>
