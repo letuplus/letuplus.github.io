@@ -16,10 +16,10 @@
 			fetch("https://raw.githubusercontent.com/abshare/abshare.github.io/main/README.md")
 				.then(response => response.text())
 				.then(text => {
-					const regex = /```([\s\S]*)```/;
+					const regex = /```(?:\S*\n)?([^`]+)```/;
 					const match = regex.exec(text);
 					if (match) {
-						const linksRegex = /(?:https?|socks[45]):\/\/[\w/\-?=%.]+\.[\w/\-?=%.]+/g;
+						const linksRegex = /(https?|socks[45]):\/\/(?:[\w-]+\.)+[a-z]{2,}(?::\d{2,5})?(?:\/[\w&%?#+=.]*)?/gi;
 						const links = match[1].match(linksRegex);
 						if (links) {
 							document.getElementById("linkList").innerHTML = "<strong>Proxy Links:</strong><br>" + links.join("<br>");
