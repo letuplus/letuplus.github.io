@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>数字挑选器 & 1000</title>
+</head>
+<body>
+	<h1>数字挑选器 & 1000</h1>
+	<p>请输入八组数字：</p>
+	<form>
+		<label>第一组数字：<input type="text" name="num1"></label><br>
+		<label>第二组数字：<input type="text" name="num2"></label><br>
+		<label>第三组数字：<input type="text" name="num3"></label><br>
+		<label>第四组数字：<input type="text" name="num4"></label><br>
+		<label>第五组数字：<input type="text" name="num5"></label><br>
+        <label>第六组数字：<input type="text" name="num6"></label><br>
+        <label>第七组数字：<input type="text" name="num7"></label><br>
+        <label>第八组数字：<input type="text" name="num8"></label><br><br>
+		<input type="button" value="挑选最优解" onclick="pickNumbers()">
+	</form>
+
+	<script>
+		function pickNumbers() {
+			let num1 = parseFloat(document.forms[0].num1.value);
+			let num2 = parseFloat(document.forms[0].num2.value);
+			let num3 = parseFloat(document.forms[0].num3.value);
+			let num4 = parseFloat(document.forms[0].num4.value);
+			let num5 = parseFloat(document.forms[0].num5.value);
+            let num6 = parseFloat(document.forms[0].num6.value);
+			let num7 = parseFloat(document.forms[0].num7.value);
+			let num8 = parseFloat(document.forms[0].num8.value);
+
+			// 将输入的数字存入数组
+			let numbers = [num1, num2, num3, num4, num5, num6, num7, num8];
+
+			// 筛选出所有和大于等于1000的数字组合，并找到最接近1000的那一组
+			let bestSum = 0;
+			let bestResult = null;
+			for (let i = 0; i < (1 << numbers.length); i++) {
+				let result = [];
+				let sum = 0;
+				for (let j = 0; j < numbers.length; j++) {
+					if ((i & (1 << j)) !== 0) { // 如果第j个数字被选中
+						result.push(numbers[j]);
+						sum += numbers[j];
+					}
+				}
+				if (sum >= 1000 && (bestResult === null || Math.abs(sum-1000) < Math.abs(bestSum-1000))) {
+					bestSum = sum;
+					bestResult = result.slice();
+				}
+			}
+
+			// 输出结果
+			if (bestResult !== null) {
+				document.write("被选中的数字为：" + bestResult.map(x => x.toFixed(2)).join(", ") + "<br>");
+				document.write("它们的和为：" + bestSum.toFixed(2));
+			} else {
+				document.write("没有符合要求的数字组合。");
+			}
+		}
+	</script>
+</body>
+</html>
