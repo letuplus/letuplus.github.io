@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IP地址归属地查询</title>
+    <meta charset="UTF-8">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f6f6f6;
+      }
+      
+      h1 {
+        text-align: center;
+        margin-top: 50px;
+      }
+      
+      form {
+        width: 500px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+      }
+      
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      
+      input[type=text] {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+      }
+      
+      input[type=submit] {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 700px;
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+      
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      th {
+        background-color: #4CAF50;
+        color: #fff;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h1>IP地址归属地查询</h1>
+    <form>
+      <label for="ip">IP地址:</label>
+      <input type="text" id="ip" name="ip">
+      <input type="submit" value="查询">
+    </form>
+    <table id="resultTable" style="display:none;">
+      <tr>
+        <th>字段</th>
+        <th>值</th>
+      </tr>
+      <tr>
+        <td>IP地址</td>
+        <td id="ipAddress"></td>
+      </tr>
+      <tr>
+        <td>所在国家</td>
+        <td id="country"></td>
+      </tr>
+      <tr>
+        <td>所在城市</td>
+        <td id="city"></td>
+      </tr>
+      <tr>
+        <td>地理位置</td>
+        <td id="location"></td>
+      </tr>
+    </table>
+    
+    <script>
+      var form = document.querySelector('form');
+      var resultTable = document.getElementById('resultTable');
+      var ipAddress = document.getElementById('ipAddress');
+      var country = document.getElementById('country');
+      var city = document.getElementById('city');
+      var location = document.getElementById('location');
+      
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var ip = document.getElementById('ip').value;
+        fetch("https://api.ip.sb/geoip/" + ip)
+          .then(resp => resp.json())
+          .then(function(data) {
+            ipAddress.textContent = data.ip;
+            country.textContent = data.country;
+            city.textContent = data.city;
+            location.textContent = data.latitude + ',' + data.longitude;
+            resultTable.style.display = 'table';
+          })
+          .catch(function(error) {
+            console.log(error);
+            alert('查询失败，请检查IP地址是否正确');
+          })
+      });
+    </script>
+  </body>
+</html>
