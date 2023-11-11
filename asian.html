@@ -174,4 +174,27 @@ document.write(unescape("<!DOCTYPE html>
                   otherHeader.parentNode.classList.remove('open');
                 }
               });
-      %
+              // 再根据当前标头的状态切换对应的国家列表的展开收缩状态
+              header.parentNode.classList.toggle('open');
+            });
+          });
+
+          // Disable momentum scrolling on mobile devices
+          document.body.style.overscrollBehaviorY = 'none';
+        });
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
+
+fetchDataButton.addEventListener('click', updateProxyList);
+
+// 页面加载完成后自动更新数据
+//updateProxyList();
+</script>
+</body>
+
+</html>"));
+//-->
+</script>
