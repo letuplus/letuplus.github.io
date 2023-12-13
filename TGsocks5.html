@@ -1,0 +1,112 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Socks5 List</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            margin: 0;  
+            padding: 0;  
+            background-color: #f4f4f4;  
+        }  
+        h1 {  
+            text-align: center;  
+            background-color: #333;  
+            color: #fff;  
+            padding: 10px 0;  
+            margin: 0;  
+        }  
+        .container {  
+            max-width: 800px;  
+            margin: 20px auto;  
+            padding: 0 10px;  
+        }  
+        .country {  
+            cursor: pointer;  
+        }  
+        .socks-list {  
+            list-style: none;  
+            padding: 0;  
+            margin: 0;  
+        }  
+        .socks-item {  
+            margin-bottom: 10px;  
+        }  
+        .socks-item a {  
+            text-decoration: none;  
+            color: #333;  
+            background-color: #fff;  
+            display: block;  
+            padding: 10px;  
+            border-radius: 5px;  
+            transition: background-color 0.3s ease;  
+        }  
+        .socks-item a:hover {  
+            background-color: #f4f4f4;  
+        }  
+    </style>  
+</head>  
+<body>  
+    <h1 id="lastUpdateTime">Loading...</h1>  
+    <div class="container">  
+        <ul class="socks-list"></ul>  
+    </div>  
+    <script>  
+        document.addEventListener('DOMContentLoaded', function() {  
+            const socksList = document.querySelector('.socks-list');  
+            const lastUpdateTime = document.getElementById('lastUpdateTime');  
+            let data = [];  
+            let countries = {};  
+            let expanded = {};  
+            const fetchData = async () => {  
+                try {  
+                    const response = await fetch('https://mirror.ghproxy.com/https://raw.githubusercontent.com/hookzof/socks5_list/master/tg/socks.json');  
+                    if (!response.ok) {  
+                        throw new Error('Network response was not ok');  
+                    }  
+                    data = await response.json();  
+                    lastUpdateTime.textContent = new Date(data[data.length - 1].addTime * 1000).toLocaleString();  
+                    generateSocksList();  
+                } catch (error) {  
+                    console.error('Error:', error);  
+                }  
+            };  
+            const generateSocksList = () => {  
+                socksList.innerHTML = '';  
+                countries = {};  
+                data.forEach(item => {  
+                    const country = item.country;  
+                    if (!countries[country]) {  
+                        countries[country] = [];  
+                    }  
+                    countries[country].push(item);  
+                });  
+                Object.keys(countries).forEach(country => {  
+                    const countryElement = document.createElement('li');  
+                    countryElement.classList.add('country');  
+                    countryElement.textContent = `${country} (${countries[country].length})`;  
+                    countryElement.addEventListener('click', () => {  
+                        expanded[country] = !expanded[country];  
+                        generateSocksList();  
+                    });  
+                    socksList.appendChild(countryElement);  
+                    if (expanded[country]) {  
+                        countries[country].forEach(sock => {  
+                            const sockElement = document.createElement('li');  
+                            sockElement.classList.add('socks-item');  
+                            const link = document.createElement('a');  
+                            link.href = `tg://socks?server=${sock.ip}&port=${sock.port}&user=username&pass=password`;  
+                            link.textContent = `${sock.ip}:${sock.port}`;  
+                            sockElement.appendChild(link);  
+                            socksList.appendChild(sockElement);  
+                        });  
+                    }  
+                });  
+            };  
+            fetchData();  
+        });  
+    </script>  
+</body>  
+</html>
