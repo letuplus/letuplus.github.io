@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>V2Ray节点信息</title>
+    <script type="text/javascript">
+        const readmeUrl = "https://api.github.com/repos/tolinkshare/freenode/contents/README.md";
+        
+        fetch(readmeUrl)
+            。then(response => response.json())
+            。then(data => {
+                const readmeContent = atob(data.content);
+                const regex = /```(.*?)```/s;
+                const matches = readmeContent.match(regex);
+                
+                if (matches && matches.length > 1) {
+                    const nodeAddress = matches[1].trim();
+                    document.getElementById("node-address").innerText = nodeAddress;
+                } else {
+                    document.getElementById("node-address").innerText = "未找到节点地址";
+                }
+            })
+            。catch(error => {
+                console.error('Error:', error);
+                document.getElementById("node-address").innerText = "获取节点地址时出错";
+            });
+    </script>
+</head>
+<body>
+    <p><span id="node-address"></span></p>
+</body>
+</html>
