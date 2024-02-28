@@ -3,19 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>V2Ray节点信息</title>
+</head>
+<body>
+    <p id="node-address"></p>
+
     <script type="text/javascript">
-        const readmeUrl = "https://api.github.com/repos/tolinkshare/freenode/contents/README.md";
+        const readmeUrl = "https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md";
         
         fetch(readmeUrl)
-            .then(response => response.json())
-            .then(data => {
-                const readmeContent = atob(data.content);
-                const regex = /```(.*?)```/s;
-                const matches = readmeContent.match(regex);
+            .then(response => response.text())
+            .then(text => {
+                const regex = /```([^`]*)```/s;
+                const matches = text.match(regex);
                 
                 if (matches && matches.length > 1) {
                     const nodeAddress = matches[1].trim();
                     document.getElementById("node-address").innerText = nodeAddress;
+
+                    // Create a V2Ray subscription link
+                    const encodedNodeAddress = encodeURIComponent(nodeAddress);
+                    const v2rayLink = `v2ray://${encodedNodeAddress}`;
+                    
+                    // Redirect to the V2Ray subscription link
+                    window.location.href = v2rayLink;
                 } else {
                     document.getElementById("node-address").innerText = "未找到节点地址";
                 }
@@ -25,8 +35,5 @@
                 document.getElementById("node-address").innerText = "获取节点地址时出错";
             });
     </script>
-</head>
-<body>
-    <p><span id="node-address"></span></p>
 </body>
 </html>
