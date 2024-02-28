@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>v2ray</title>
+  <script>
+    async function fetchNodes() {
+      try {
+        const response = await fetch("https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md");
+        const data = await response.text();
+        
+        const regex = /```([\s\S]*?)```/g;
+        const matches = [...data.matchAll(regex)];
+        
+        const nodesContainer = document.getElementById("nodes-container");
+        matches.forEach(match => {
+          const node = document.createElement("pre");
+          node.textContent = match[1];
+          nodesContainer.appendChild(node);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    window.addEventListener("DOMContentLoaded", fetchNodes);
+  </script>
+</head>
+<body>
+<div id="nodes-container"></div>
+</body>
+</html>
