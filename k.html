@@ -2,37 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>V2Ray节点信息</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Nodes from README.md</title>
 </head>
 <body>
-    <p id="node-address"></p>
+    <div id="nodes"></div>
 
-    <script type="text/javascript">
-        const readmeUrl = "https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md";
-        
-        fetch(readmeUrl)
-            。then(response => response.text())
-            。then(text => {
-                const regex = /```([^`]*)```/s;
-                const matches = text.match(regex);
-                
-                if (matches && matches.length > 1) {
-                    const nodeAddress = matches[1].trim();
-                    document.getElementById("node-address").innerText = nodeAddress;
+    <script>
+        fetch('https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md')
+            .then(response => response.text())
+            .then(data => {
+                const regex = /```([\s\S]+?)```/g;
+                const matches = Array.from(data.matchAll(regex));
 
-                    // Create a V2Ray subscription link
-                    const encodedNodeAddress = encodeURIComponent(nodeAddress);
-                    const v2rayLink = `v2ray://${encodedNodeAddress}`;
-                    
-                    // Redirect to the V2Ray subscription link
-                    window.location.href = v2rayLink;
+                if (matches.length > 0) {
+                    const nodesText = matches[0][1];
+                    document.getElementById('nodes').innerText = nodesText;
+
+                    // Convert nodes to V2Ray subscription format
+                    const v2rayNodes = nodesText.split('\n').map(node => {
+                        const [name, address, port, id, alterId, security] = node.split('|').map(item => item.trim());
+                        return `vmess://${btoa(`${id}:${alterId}@${address}:${port}/?security=${security}&remark=${name}`)}`;
+                    });
+
+                    console.log('V2Ray Nodes:', v2rayNodes);
                 } else {
-                    document.getElementById("node-address").innerText = "未找到节点地址";
+                    document.getElementById('nodes').innerText = 'No nodes found in README.md';
                 }
             })
-            。catch(error => {
-                console.error('Error:', error);
-                document.getElementById("node-address").innerText = "获取节点地址时出错";
+            .catch(error => {
+                console.error('An error occurred:', error);
+                document.getElementById('nodes').innerText = 'Error fetching data';
             });
     </script>
 </body>
