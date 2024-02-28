@@ -7,8 +7,8 @@
         const readmeUrl = "https://api.github.com/repos/tolinkshare/freenode/contents/README.md";
         
         fetch(readmeUrl)
-            。then(response => response.json())
-            。then(data => {
+            .then(response => response.json())
+            .then(data => {
                 const readmeContent = atob(data.content);
                 const regex = /```(.*?)```/s;
                 const matches = readmeContent.match(regex);
@@ -20,7 +20,7 @@
                     document.getElementById("node-address").innerText = "未找到节点地址";
                 }
             })
-            。catch(error => {
+            .catch(error => {
                 console.error('Error:', error);
                 document.getElementById("node-address").innerText = "获取节点地址时出错";
             });
