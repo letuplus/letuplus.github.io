@@ -1,40 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Nodes from README.md</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extracted Data</title>
 </head>
 <body>
-    <div id="nodes"></div>
+<h2>Data from URLs</h2>
 
-    <script>
-        fetch('https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md')
-            .then(response => response.text())
-            .then(data => {
-                const regex = /```([\s\S]+?)```/g;
-                const matches = Array.from(data.matchAll(regex));
+<div id="data1"></div>
+<div id="data2"></div>
+<div id="data3"></div>
 
-                if (matches.length > 0) {
-                    const nodesText = matches[0][1];
-                    document.getElementById('nodes').innerText = nodesText;
+<script>
+async function fetchData(url, targetId) {
+  try {
+    const response = await fetch(url);
+    const text = await response.text();
+    const data = text.match(/```(.*?)```/s)[1];
+    document.getElementById(targetId).innerText = data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    document.getElementById(targetId).innerText = 'Error fetching data';
+  }
+}
 
-                    // Convert nodes to V2Ray subscription format
-                    const v2rayNodes = nodesText.split('\n').map(node => {
-                        const [name, address, port, id, alterId, security] = node.split('|').map(item => item.trim());
-                        return `vmess://${btoa(`${id}:${alterId}@${address}:${port}/?security=${security}&remark=${name}`)}`;
-                    });
+fetchData('https://raw.githubusercontent.com/tolinkshare/freenode/main/README.md', 'data1');
+fetchData('https://raw.githubusercontent.com/abshare/abshare.github.io/main/README.md', 'data2');
+fetchData('https://raw.githubusercontent.com/mksshare/mksshare.github.io/main/README.md', 'data3');
+</script>
 
-                    console.log('V2Ray Nodes:', v2rayNodes);
-                } else {
-                    document.getElementById('nodes').innerText = 'No nodes found in README.md';
-                }
-            })
-            .catch(error => {
-                console.error('An error occurred:', error);
-                document.getElementById('nodes').innerText = 'Error fetching data';
-            });
-    </script>
 </body>
 </html>
