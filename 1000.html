@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数字挑选器 &amp; 1000</title>
+    <title>数字挑选器 &amp; 800</title>
     <style>
         html {
             box-sizing: border-box;
@@ -17,7 +17,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: Arial， sans-serif;
             font-size: 1rem;
         }
 
@@ -38,13 +38,13 @@
             margin: 0 auto;
         }
 
-        .input-group {
+        。input-group {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
         }
 
-        .input-group label {
+        。input-group label {
             margin: 0.5rem;
             width: 100%;
             max-width: 20rem;
@@ -59,7 +59,7 @@
             max-width: 20rem;
         }
 
-        .buttons {
+        。buttons {
             display: flex;
             justify-content: center;
             margin-top: 1rem;
@@ -75,7 +75,7 @@
             cursor: pointer;
         }
 
-        input[type="button"].pick-button {
+        input[type="button"]。pick-button {
             margin-right: 0;
             margin-right: 30px;
         }
@@ -90,7 +90,7 @@
             font-weight: bold;
         }
 
-        @media screen and (max-width: 600px) {
+        @media screen 和 (max-width: 600px) {
             html {
                 font-size: 14px;
             }
@@ -104,7 +104,7 @@
             }
         }
 
-        @media screen and (min-width: 601px) {
+        @media screen 和 (min-width: 601px) {
             form {
                 padding: 0 2rem;
             }
@@ -117,7 +117,7 @@
     </style>
 </head>
 <body>
-    <h1>数字挑选器 &amp; 1000</h1>
+    <h1>数字挑选器 &amp; 800</h1>
 
 <div style="text-align: center;">
   <p>请输入数组</p>
@@ -144,47 +144,47 @@
 
     <script>
         function resetNumbers() {
-            document.forms[0].reset();
-            document.getElementById("result").innerHTML = "";
+            document。forms[0]。reset();
+            document。getElementById("result")。innerHTML = "";
         }
 
         function pickNumbers() {
-            let num1 = parseFloat(document.forms[0].num1.value);
-            let num2 = parseFloat(document.forms[0].num2.value);
-            let num3 = parseFloat(document.forms[0].num3.value);
-            let num4 = parseFloat(document.forms[0].num4.value);
-            let num5 = parseFloat(document.forms[0].num5.value);
-            let num6 = parseFloat(document.forms[0].num6.value);
-            let num7 = parseFloat(document.forms[0].num7.value);
-            let num8 = parseFloat(document.forms[0].num8.value);
+            let num1 = parseFloat(document。forms[0]。num1。value);
+            let num2 = parseFloat(document。forms[0]。num2。value);
+            let num3 = parseFloat(document。forms[0]。num3。value);
+            let num4 = parseFloat(document。forms[0]。num4。value);
+            let num5 = parseFloat(document。forms[0]。num5。value);
+            let num6 = parseFloat(document。forms[0]。num6。value);
+            let num7 = parseFloat(document。forms[0]。num7。value);
+            let num8 = parseFloat(document。forms[0]。num8。value);
 
         // 将输入的数字存入数组
-        let numbers = [num1, num2, num3, num4, num5, num6, num7, num8];
+        let numbers = [num1， num2， num3， num4， num5， num6， num7， num8];
 
-        // 筛选出所有和大于等于1000的数字组合，并找到最接近1000的那一组
+        // 筛选出所有和大于等于800的数字组合，并找到最接近800的那一组
         let bestSum = 0;
         let bestResult = null;
-        for (let i = 0; i < (1 << numbers.length); i++) {
+        for (let i = 0; i < (1 << numbers。length); i++) {
             let result = [];
             let sum = 0;
-            for (let j = 0; j < numbers.length; j++) {
+            for (let j = 0; j < numbers。length; j++) {
                 if ((i & (1 << j)) !== 0) { // 如果第j个数字被选中
-                    result.push(numbers[j]);
+                    result。push(numbers[j]);
                     sum += numbers[j];
                 }
             }
-            if (sum >= 1000 && (bestResult === null || Math.abs(sum-1000) < Math.abs(bestSum-1000))) {
+            if (sum >= 800 && (bestResult === null || Math。abs(sum-800) < Math。abs(bestSum-800))) {
                 bestSum = sum;
-                bestResult = result.slice();
+                bestResult = result。slice();
             }
         }
 
         // 输出结果
         if (bestResult !== null) {
-            document.getElementById("result").innerHTML = "被选中的数字为：" + bestResult.map(x => x.toFixed(2)).join(", ") + "<br>" +
-            "它们的和为：" + bestSum.toFixed(2);
+            document。getElementById("result")。innerHTML = "被选中的数字为：" + bestResult。map(x => x。toFixed(2))。join(", ") + "<br>" +
+            "它们的和为：" + bestSum。toFixed(2);
         } else {
-            document.getElementById("result").innerHTML = "没有符合要求的数字组合。";
+            document。getElementById("result")。innerHTML = "没有符合要求的数字组合。";
         }
     }
 </script>
