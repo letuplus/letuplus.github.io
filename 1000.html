@@ -1,192 +1,141 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数字挑选器 &amp; 800</title>
-    <style>
-        html {
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        *, *:before, *:after {
-            box-sizing: inherit;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            font-size: 1rem;
-        }
-
-        h1 {
-            font-size: 2rem;
-            text-align: center;
-            margin: 1rem 0;
-        }
-
-        p {
-            margin: 1rem 0;
-        }
-
-        form {
-            margin-bottom: 1rem;
-            padding: 0 1rem;
-            max-width: 60rem;
-            margin: 0 auto;
-        }
-
-        .input-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .input-group label {
-            margin: 0.5rem;
-            width: 100%;
-            max-width: 20rem;
-            text-align: center;
-        }
-
-        input[type="text"] {
-            padding: 0.5rem;
-            border-radius: 0.25rem;
-            border: 1px solid #999999;
-            width: 100%;
-            max-width: 20rem;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-
-        input[type="button"] {
-            background-color: #0074D9;
-            color: #FFFFFF;
-            padding: 0.5rem 1rem;
-            border-radius: 0.25rem;
-            border: none;
-            margin-right: 20px;
-            cursor: pointer;
-        }
-
-        input[type="button"].pick-button {
-            margin-right: 0;
-            margin-right: 30px;
-        }
-
-        input[type="button"]:hover {
-            background-color: #0058A7;
-        }
-
-        #result {
-            text-align: center;
-            margin-top: 1rem;
-            font-weight: bold;
-        }
-
-        @media screen and (max-width: 600px) {
-            html {
-                font-size: 14px;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            label {
-                max-width: 100%;
-            }
-        }
-
-        @media screen and (min-width: 601px) {
-            form {
-                padding: 0 2rem;
-            }
-
-            input[type="text"] {
-                width: auto;
-                max-width: none;
-            }
-        }
-    </style>
+  <title>数字挑选器</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      width: 80%;
+      margin: 40px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .input-group input {
+      width: 30%;
+      height: 40px;
+      padding: 10px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .button {
+      width: 45%;
+      height: 40px;
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #3e8e41;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+  </style>
 </head>
 <body>
-    <h1>数字挑选器 &amp; 800</h1>
+  <div class="container">
+    <h2>数字挑选器</h2>
+    <div class="input-group">
+      <input type="number" id="num1" placeholder="数字1">
+      <input type="number" id="num2" placeholder="数字2">
+      <input type="number" id="num3" placeholder="数字3">
+    </div>
+    <div class="input-group">
+      <input type="number" id="num4" placeholder="数字4">
+      <input type="number" id="num5" placeholder="数字5">
+      <input type="number" id="num6" placeholder="数字6">
+    </div>
+    <div class="input-group">
+      <input type="number" id="num7" placeholder="数字7">
+      <input type="number" id="num8" placeholder="数字8">
+      <input type="number" id="num9" placeholder="数字9">
+    </div>
+    <div class="input-group">
+      <input type="number" id="num10" placeholder="数字10">
+      <input type="number" id="num11" placeholder="数字11">
+      <input type="number" id="num12" placeholder="数字12">
+    </div>
+    <div class="button-group">
+      <button class="button" id="start" onclick="start()">开始</button>
+      <button class="button" id="reset" onclick="reset()">初始化</button>
+    </div>
+    <div class="result" id="result"></div>
+  </div>
 
-<div style="text-align: center;">
-  <p>请输入数组</p>
-</div>
-
-    <form>
-        <div class="input-group">
-            <label>第一组数字：<input type="text" name="num1"></label>
-            <label>第二组数字：<input type="text" name="num2"></label>
-            <label>第三组数字：<input type="text" name="num3"></label>
-            <label>第四组数字：<input type="text" name="num4"></label>
-            <label>第五组数字：<input type="text" name="num5"></label>
-            <label>第六组数字：<input type="text" name="num6"></label>
-            <label>第七组数字：<input type="text" name="num7"></label>
-            <label>第八组数字：<input type="text" name="num8"></label>
-        </div>
-        <div class="buttons">
-            <input type="button" value="挑选最优解" class="pick-button" onclick="pickNumbers()">
-            <input type="button" value="初始化" onclick="resetNumbers()">
-        </div>
-    </form>
-
-    <div id="result"></div>
-
-    <script>
-        function resetNumbers() {
-            document。forms[0]。reset();
-            document。getElementById("result")。innerHTML = "";
+  <script>
+    function start() {
+      const nums = [];
+      for (let i = 1; i <= 12; i++) {
+        const numInput = document。getElementById(`num${i}`);
+        const num = parseInt(numInput。value);
+        if (!isNaN(num)) {
+          nums。push(num);
         }
+      }
 
-        function pickNumbers() {
-            let num1 = parseFloat(document。forms[0]。num1。value);
-            let num2 = parseFloat(document。forms[0]。num2。value);
-            let num3 = parseFloat(document。forms[0]。num3。value);
-            let num4 = parseFloat(document。forms[0]。num4。value);
-            let num5 = parseFloat(document。forms[0]。num5。value);
-            let num6 = parseFloat(document。forms[0]。num6。value);
-            let num7 = parseFloat(document。forms[0]。num7。value);
-            let num8 = parseFloat(document。forms[0]。num8。value);
-
-        // 将输入的数字存入数组
-        let numbers = [num1， num2， num3， num4， num5， num6， num7， num8];
-
-        // 筛选出所有和大于等于800的数字组合，并找到最接近800的那一组
-        let bestSum = 0;
-        let bestResult = null;
-        for (let i = 0; i < (1 << numbers。length); i++) {
-            let result = [];
-            let sum = 0;
-            for (let j = 0; j < numbers。length; j++) {
-                if ((i & (1 << j)) !== 0) { // 如果第j个数字被选中
-                    result。push(numbers[j]);
-                    sum += numbers[j];
-                }
-            }
-            if (sum >= 800 && (bestResult === null || Math。abs(sum-800) < Math。abs(bestSum-800))) {
-                bestSum = sum;
-                bestResult = result。slice();
-            }
-        }
-
-        // 输出结果
-        if (bestResult !== null) {
-            document。getElementById("result")。innerHTML = "被选中的数字为：" + bestResult。map(x => x。toFixed(2))。join(", ") + "<br>" +
-            "它们的和为：" + bestSum。toFixed(2);
-        } else {
-            document。getElementById("result")。innerHTML = "没有符合要求的数字组合。";
-        }
+      const combination = getBestCombination(nums， 800);
+      const resultDiv = document。getElementById('result');
+      resultDiv。innerHTML = '';
+      if (combination) {
+        const p = document。createElement('p');
+        p。textContent = `组合：${combination。join(', ')}, 总和：${combination。reduce((a， b) => a + b， 0)}`;
+        resultDiv。appendChild(p);
+      } else {
+        const p = document。createElement('p');
+        p。textContent = '没有找到合适的组合';
+        resultDiv。appendChild(p);
+      }
     }
-</script>
+
+    function reset() {
+      for (let i = 1; i <= 12; i++) {
+        const numInput = document。getElementById(`num${i}`);
+        numInput。value = '';
+      }
+      const resultDiv = document。getElementById('result');
+      resultDiv。innerHTML = '';
+    }
+    function getBestCombination(nums， target) {
+      let bestCombination = null;
+      let bestSum = Infinity;
+      for (let i = 1; i < (1 << nums。length); i++) {
+        const combination = [];
+        for (let j = 0; j < nums。length; j++) {
+          if ((i & (1 << j)) !== 0) {
+            combination。push(nums[j]);
+          }
+        }
+        const sum = combination。reduce((a， b) => a + b， 0);
+        if (sum >= target && sum < bestSum) {
+          bestCombination = combination;
+          bestSum = sum;
+        }
+      }
+      return bestCombination;
+    }
+  </script>
 </body>
 </html>
